@@ -4,10 +4,10 @@
  * Copyright 2009 Joachim Giard
  * Université catholique de Louvain, Belgium
  * Apache License, Version 2.0
- * 
- * Class containing various methods to apply on 3D meshes. The 
+ *
+ * Class containing various methods to apply on 3D meshes. The
  * meshanalyser object takes a vtkPolyData object as input.
- * 
+ *
  * *******************************************************************/
 
 
@@ -82,6 +82,16 @@ public:
 	//Compute Travel Depth and fill this->depth
 	void ComputeTravelDepth(bool norm);
 
+        //ComputeTravelDepth(bool arg1)
+        //
+        //Compute the travel depth, i.e., the shortest distance between the
+        //mesh surface and a reference mesh without going through the mesh
+        //interior.
+        //
+        //arg1 = bool (true -> depth normalized between 0 and 1)
+        //arg2 = vtkPolyData: reference mesh
+        //Compute Travel Depth and fill this->depth
+        void ComputeTravelDepth(bool norm, vtkPolyData* refMesh);
 	
 	//GeoDistRing(vtkIdType arg1, double arg2)
 	//GeoDistRing(vtkIdType arg1, double arg2, double arg3)
