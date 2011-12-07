@@ -12,6 +12,6 @@ PROJECT(meshTest)
 FIND_PACKAGE(VTK REQUIRED)
 INCLUDE(${VTK_USE_FILE})
 
-ADD_EXECUTABLE(meshTest meshTest.cxx MeshAnalyser.h)
+ADD_EXECUTABLE(meshTest meshTest.cxx MeshAnalyser.h BrainMeshing.h)
 
 TARGET_LINK_LIBRARIES(meshTest vtkCommon vtkRendering)
