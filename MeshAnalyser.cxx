@@ -5,9 +5,9 @@
  * Université catholique de Louvain, Belgium
  * Apache License, Version 2.0
  *
- * Class containing various methods to apply on 3D meshes. The 
+ * Class containing various methods to apply on 3D meshes. The
  * meshanalyser object takes a vtkPolyData object as input
- * 
+ *
  * *******************************************************************/
 
 
@@ -698,16 +698,21 @@ void MeshAnalyser::ComputePointSurfaceSimple()
 
 void MeshAnalyser::ComputeTravelDepth(bool norm)
 {
-	int maxBound=5000;
+    //convex hull construction
+    int recPlan=3;
 
-	//convex hull construction
-	int recPlan=3;
-	
-	vtkHull *hull = vtkHull::New();
-	hull->SetInput(this->mesh);
-	hull->AddRecursiveSpherePlanes(recPlan);
-	vtkPolyData *pq =hull->GetOutput();
-	pq->Update();
+    vtkHull *hull = vtkHull::New();
+    hull->SetInput(this->mesh);
+    hull->AddRecursiveSpherePlanes(recPlan);
+    vtkPolyData *pq =hull->GetOutput();
+    pq->Update();
+
+    ComputeTravelDepth(norm, pq);
+}
+
+void MeshAnalyser::ComputeTravelDepth(bool norm, vtkPolyData* pq)
+{
+	int maxBound=5000;
 
 	//Point locator for the closest point of the convex hull
 	vtkCellLocator *pl = vtkCellLocator::New();
@@ -727,14 +732,11 @@ void MeshAnalyser::ComputeTravelDepth(bool norm)
 
 	vtkIdList* frontier=vtkIdList::New();		//points with a certitude<maximal certitude
 	
-	double dist, point1[3], point2[3], epsilon = 1;
+        double point1[3], point2[3];
 	int  subid;
 	vtkIdType cellid;
 
 	double ec=0;
-	vtkIdType closestPointId;
-
-	hull->Delete();
 
 //-----------------------------------------------//
 //allocation of the distance to the              //
@@ -742,7 +744,6 @@ void MeshAnalyser::ComputeTravelDepth(bool norm)
 //-----------------------------------------------// 
 
 	double threshold=0.30;
-	double minDist;
 	
 	double vector[3];
 
@@ -758,7 +759,7 @@ void MeshAnalyser::ComputeTravelDepth(bool norm)
 	vtkPoints* nHPoints=vtkPoints::New();		//new reference points
 	vtkIdList* nHList=vtkIdList::New();
 
-	int doneLabel=7;							//maximal certitude
+        int doneLabel=7;				//maximal certitude
 	int goodLabel=6;
 	double tempSurf=0;
 	for(int i = 0; i < this->nbPoints; i++)
