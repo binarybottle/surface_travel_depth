@@ -96,12 +96,12 @@ public:
         //ComputeTravelDepth(bool arg1)
         //
         //Compute the travel depth, i.e., the shortest distance between the
-        //mesh surface and a reference mesh (the inflated mesh) without going
+        //mesh surface and a reference mesh (the closed mesh) without going
         //through the mesh interior.
         //
         //arg1 = bool (true -> depth normalized between 0 and 1)
         //Compute Travel Depth and fill this->depth
-        void ComputeTravelDepthFromInflated(bool norm);
+        void ComputeTravelDepthFromClosed(bool norm);
 
         //ComputeEuclideanDepth(bool arg1)
         //
@@ -125,11 +125,11 @@ public:
         //ComputeEuclideanDepth(bool arg1)
         //
         //Compute the Euclidean depth, i.e., the shortest Euclidean distance between the
-        //mesh surface and a reference mesh (the inflated mesh)
+        //mesh surface and a reference mesh (the closed mesh)
         //
         //arg1 = bool (true -> depth normalized between 0 and 1)
         //Compute Travel Depth and fill this->euclideanDepth
-        void ComputeEuclideanDepthFromInflated(bool norm);
+        void ComputeEuclideanDepthFromClosed(bool norm);
 
 
 	//GeoDistRing(vtkIdType arg1, double arg2)
@@ -212,7 +212,7 @@ public:
         //
         //Compute a mesh that correspond to a morphological closing
         //of the interior volume of the mesh. Stores it to this->closedMesh
-        void ComputeInflatedMesh();
+        void ComputeClosedMesh();
 
 
 	//Methods to get instance variables

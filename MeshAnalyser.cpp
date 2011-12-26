@@ -729,11 +729,11 @@ void MeshAnalyser::ComputePointSurfaceSimple()
 	}
 }
 
-void MeshAnalyser::ComputeTravelDepthFromInflated(bool norm)
+void MeshAnalyser::ComputeTravelDepthFromClosed(bool norm)
 {
     if(this->closedMesh->GetNumberOfPoints()<1)
     {
-        ComputeInflatedMesh();
+        ComputeClosedMesh();
     }
 
     ComputeTravelDepth(norm,this->closedMesh);
@@ -1307,11 +1307,11 @@ void MeshAnalyser::ComputeEuclideanDepth(bool norm, vtkPolyData *refMesh)
 
 }
 
-void MeshAnalyser::ComputeEuclideanDepthFromInflated(bool norm)
+void MeshAnalyser::ComputeEuclideanDepthFromClosed(bool norm)
 {
     if(this->closedMesh->GetNumberOfPoints()<1)
     {
-        ComputeInflatedMesh();
+        ComputeClosedMesh();
     }
 
     ComputeEuclideanDepth(norm,this->closedMesh);
@@ -1599,7 +1599,7 @@ void MeshAnalyser::ComputeHistogram(char* prop, int nbBins)
 	
 }
 
-void MeshAnalyser::ComputeInflatedMesh()
+void MeshAnalyser::ComputeClosedMesh()
 {
 
 
@@ -1688,6 +1688,6 @@ void MeshAnalyser::ComputeInflatedMesh()
 
     this->closedMesh->DeepCopy(imc3->GetOutput());
 
-    cout<<"Inflated mesh computed"<<endl;
+    cout<<"Closed mesh computed"<<endl;
 
 }

@@ -35,11 +35,11 @@ int main(int argc, char** argv)
 
     MeshAnalyser* ma = new MeshAnalyser(fsr1->GetVTKData());
 
-    ma->ComputeInflatedMesh();
+    ma->ComputeClosedMesh();
 
     //may be replaced by ComputeTravelDepthFromInflated
     //which is slower but does not allow to cross the surface
-    ma->ComputeEuclideanDepthFromInflated(true);
+    ma->ComputeEuclideanDepthFromClosed(true);
 
     ma->WriteIntoFile((char*)"closed.vtk",(char*)"closed");
     ma->WriteIntoFile((char*)"depth.vtk",(char*)"euclideanDepth");
