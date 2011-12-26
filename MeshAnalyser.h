@@ -82,7 +82,7 @@ public:
 	//Compute Travel Depth and fill this->depth
 	void ComputeTravelDepth(bool norm);
 
-        //ComputeTravelDepth(bool arg1)
+        //ComputeTravelDepth(bool arg1, vtkPolyData* arg2)
         //
         //Compute the travel depth, i.e., the shortest distance between the
         //mesh surface and a reference mesh without going through the mesh
@@ -92,7 +92,46 @@ public:
         //arg2 = vtkPolyData: reference mesh
         //Compute Travel Depth and fill this->depth
         void ComputeTravelDepth(bool norm, vtkPolyData* refMesh);
-	
+
+        //ComputeTravelDepth(bool arg1)
+        //
+        //Compute the travel depth, i.e., the shortest distance between the
+        //mesh surface and a reference mesh (the inflated mesh) without going
+        //through the mesh interior.
+        //
+        //arg1 = bool (true -> depth normalized between 0 and 1)
+        //Compute Travel Depth and fill this->depth
+        void ComputeTravelDepthFromInflated(bool norm);
+
+        //ComputeEuclideanDepth(bool arg1)
+        //
+        //Compute the Euclidean depth, i.e., the shortest Euclidean distance between the
+        //mesh surface and its convex hull
+        //
+        //arg1 = bool (true -> depth normalized between 0 and 1)
+        //Compute Travel Depth and fill this->euclideanDepth
+        void ComputeEuclideanDepth(bool norm);
+
+        //ComputeEuclideanDepth(bool arg1, vtkPolyData* arg2)
+        //
+        //Compute the Euclidean depth, i.e., the shortest Euclidean distance between the
+        //mesh surface and a reference mesh
+        //
+        //arg1 = bool (true -> depth normalized between 0 and 1)
+        //arg2 = vtkPolyData: reference mesh
+        //Compute Travel Depth and fill this->euclideanDepth
+        void ComputeEuclideanDepth(bool norm, vtkPolyData* refMesh);
+
+        //ComputeEuclideanDepth(bool arg1)
+        //
+        //Compute the Euclidean depth, i.e., the shortest Euclidean distance between the
+        //mesh surface and a reference mesh (the inflated mesh)
+        //
+        //arg1 = bool (true -> depth normalized between 0 and 1)
+        //Compute Travel Depth and fill this->euclideanDepth
+        void ComputeEuclideanDepthFromInflated(bool norm);
+
+
 	//GeoDistRing(vtkIdType arg1, double arg2)
 	//GeoDistRing(vtkIdType arg1, double arg2, double arg3)
 	//
@@ -169,13 +208,13 @@ public:
 	//covering [min,max] the min and the max of the variable. Print out the result.
 	void ComputeHistogram(char* prop, int nbBins);
 
-	
-	void ComputeVisibility();
-	
-	//testMethod();
-	//Testing vtk classes
-	void testMethod();
-	
+        //ComputeClosedMesh
+        //
+        //Compute a mesh that correspond to a morphological closing
+        //of the interior volume of the mesh. Stores it to this->closedMesh
+        void ComputeInflatedMesh();
+
+
 	//Methods to get instance variables
 	vtkDoubleArray* GetGeoDistRing(){return this->geoDistRing;}
 	vtkIdList* GetPointsInRing(){return this->inRing;}
@@ -207,9 +246,7 @@ protected:
 	//ComputePointSurfaceSimple()
 	//Compute surface corresponding to each point of this->simpl and fill this->pointSurfSimple
 	void ComputePointSurfaceSimple();
-	
-
-	
+		
 	
 private:
 
@@ -282,9 +319,13 @@ private:
 
 	//Indices of the voronoi bin in which the vertex is contained (ComputeVoronoi)
 	vtkIdList* voronoiBin;
-	
-	vtkDoubleArray* visi;
 
+        //A mesh corresponding to the morphological closing
+        //of the interior volume of the original mesh.
+        vtkPolyData* closedMesh;
+
+        //vector containg Euclidean depth values (ComputeEuclideanDepth)
+        vtkDoubleArray* euclideanDepth;
 };
 
 #endif

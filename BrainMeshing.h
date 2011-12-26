@@ -15,6 +15,7 @@
 
 #include <vtkPolyData.h>
 #include <vtkImageData.h>
+#include <vtkTransform.h>
 
 class BrainMeshing
 {
@@ -29,9 +30,15 @@ public:
     void SetProbeRadius(double pr);
     void SetThreshold(double th);
 
+    vtkImageData* GetModifiedImage();
+
+    void SetTransform(vtkTransform* transform);
 
 private:
     vtkImageData* m_inputImage;
+    vtkImageData* m_modifiedImage;
+
+    vtkTransform* m_transform;
 
     float m_shrinkFactor;
     float m_probeRadius;
