@@ -37,7 +37,7 @@ public:
 	MeshAnalyser(vtkPolyData* mesh);
 	MeshAnalyser(char* fileName);
 	~MeshAnalyser();
-	
+
 	//SetMesh(char* arg1)
 	//SetMesh(vtkPolyData* arg1)
 	//
@@ -222,6 +222,7 @@ public:
 	vtkPolyData* GetMesh(){return this->mesh;}
 	vtkDoubleArray* GetPointSurface(){return this->pointSurf;}
 	vtkDoubleArray* GetTravelDepth(){return this->depth;}
+        vtkDoubleArray* GetEuclideanDepth(){return this->euclideanDepth;}
 	vtkDoubleArray* GetCurvature(){return this->curv;}
 	vtkDoubleArray* GetGaussianCurvature(){return this->gCurv;}
 	vtkPolyData* GetSimpleMesh(){return this->simpl;}
@@ -249,6 +250,11 @@ protected:
 		
 	
 private:
+
+        //Initialize
+        //
+        //The common part of the constructors
+        void Initialize();
 
 	//Analysed mesh (constructor or SetMesh)
 	vtkPolyData* mesh;

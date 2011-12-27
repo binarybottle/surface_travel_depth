@@ -19,6 +19,8 @@ ADD_EXECUTABLE(meshTest
                 BrainMeshing.h
                 BrainMeshing.cpp
                 FsSurfaceReader.h
-                FsSurfaceReader.cpp)
+                FsSurfaceReader.cpp
+VtkFileEditor.h
+VtkFileEditor.cxx)
 
 TARGET_LINK_LIBRARIES(meshTest vtkCommon vtkRendering vtkHybrid)

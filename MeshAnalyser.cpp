@@ -52,77 +52,64 @@
 
 MeshAnalyser::MeshAnalyser(char* fileName)
 {
-	this->mesh=vtkPolyData::New();
-	this->simpl=vtkPolyData::New();
-	this->depth=vtkDoubleArray::New();
-        this->euclideanDepth=vtkDoubleArray::New();
-	this->pointSurf=vtkDoubleArray::New();
-	this->pointSurfSimple=vtkDoubleArray::New();
-	this->geoDistRing=vtkDoubleArray::New();
-	this->geoDistRingSimple=vtkDoubleArray::New();
-	this->curv=vtkDoubleArray::New();
-	this->gCurv=vtkDoubleArray::New();
-	this->totalSurface=0;
-	this->totalSurfaceSimple=0;
-	this->inRing=vtkIdList::New();
-	this->inRingSimple=vtkIdList::New();
-	this->predGeo=vtkIdList::New();
-	this->test=vtkDoubleArray::New();
-	this->close=vtkIdList::New();
-	this->voronoiBin=vtkIdList::New();
-        this->closedMesh=vtkPolyData::New();
 	
 	vtkPolyDataReader* reader=vtkPolyDataReader::New();
 	reader->SetFileName(fileName);
 	reader->Update();
 
-
         vtkTriangleFilter* tf = vtkTriangleFilter::New();
         tf->SetInput(reader->GetOutput());
         tf->Update();
 
+        this->mesh=vtkPolyData::New();
         this->mesh->DeepCopy(tf->GetOutput());
-	this->nbPoints=reader->GetOutput()->GetNumberOfPoints();
+
 	reader->Delete();
-	
-	ComputePointSurface();
-	ComputeNormals();
+
+        Initialize();
+
 }
 
 MeshAnalyser::MeshAnalyser(vtkPolyData* mesh)
 {
-	this->mesh=vtkPolyData::New();
-	this->simpl=vtkPolyData::New();
-	this->depth=vtkDoubleArray::New();
-        this->euclideanDepth=vtkDoubleArray::New();
-	this->pointSurf=vtkDoubleArray::New();
-	this->pointSurfSimple=vtkDoubleArray::New();
-	this->geoDistRing=vtkDoubleArray::New();
-	this->geoDistRingSimple=vtkDoubleArray::New();
-	this->curv=vtkDoubleArray::New();
-	this->gCurv=vtkDoubleArray::New();
-	this->totalSurface=0;
-	this->totalSurfaceSimple=0;
-	this->inRing=vtkIdList::New();
-	this->inRingSimple=vtkIdList::New();
-	this->predGeo=vtkIdList::New();
-	this->test=vtkDoubleArray::New();
-	this->close=vtkIdList::New();
-	this->voronoiBin=vtkIdList::New();
-        this->closedMesh=vtkPolyData::New();
-
         vtkTriangleFilter* tf = vtkTriangleFilter::New();
         tf->SetInput(mesh);
         tf->Update();
 
+        this->mesh=vtkPolyData::New();
         this->mesh->DeepCopy(tf->GetOutput());
-
-	this->nbPoints=mesh->GetNumberOfPoints();
 	
-	ComputePointSurface();
-	ComputeNormals();
+        Initialize();
+
 }
 
+
+void MeshAnalyser::Initialize()
+{
+    this->simpl=vtkPolyData::New();
+    this->depth=vtkDoubleArray::New();
+    this->euclideanDepth=vtkDoubleArray::New();
+    this->pointSurf=vtkDoubleArray::New();
+    this->pointSurfSimple=vtkDoubleArray::New();
+    this->geoDistRing=vtkDoubleArray::New();
+    this->geoDistRingSimple=vtkDoubleArray::New();
+    this->curv=vtkDoubleArray::New();
+    this->gCurv=vtkDoubleArray::New();
+    this->totalSurface=0;
+    this->totalSurfaceSimple=0;
+    this->inRing=vtkIdList::New();
+    this->inRingSimple=vtkIdList::New();
+    this->predGeo=vtkIdList::New();
+    this->test=vtkDoubleArray::New();
+    this->close=vtkIdList::New();
+    this->voronoiBin=vtkIdList::New();
+    this->closedMesh=vtkPolyData::New();
+
+    this->nbPoints=this->mesh->GetNumberOfPoints();
+
+    ComputePointSurface();
+    ComputeNormals();
+}
 
 MeshAnalyser::~MeshAnalyser()
 {

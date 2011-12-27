@@ -15,6 +15,7 @@
 
 #include <vtkTransform.h>
 #include <vtkImageReader.h>
+#include "VtkFileEditor.h"
 
 #include "FsSurfaceReader.h"
 
@@ -39,10 +40,22 @@ int main(int argc, char** argv)
 
     //may be replaced by ComputeTravelDepthFromInflated
     //which is slower but does not allow to cross the surface
-    ma->ComputeEuclideanDepthFromClosed(true);
+    ma->ComputeEuclideanDepth(true);
 
-    ma->WriteIntoFile((char*)"closed.vtk",(char*)"closed");
-    ma->WriteIntoFile((char*)"depth.vtk",(char*)"euclideanDepth");
+    ma->ComputeCurvature(0.7);
+
+//    ma->WriteIntoFile((char*)"closed.vtk",(char*)"closed");
+
+    ma->WriteIntoFile(argv[2],(char*)"curv");
+
+    VtkFileEditor* vfe = new VtkFileEditor(argv[2]);
+    vfe->CreateField((char*)"DEPTH", ma->GetEuclideanDepth());
+    vfe->CreateField((char*)"CURVATURE", ma->GetCurvature());
+    delete vfe;
+
+    delete ma;
+    delete fsr1;
+
 
     cout<<"Elapsed time (meshTest): "<<time(NULL)-start<<" s"<<endl;
     return 0;

@@ -107,16 +107,26 @@ FsSurfaceReader::FsSurfaceReader(char *fileName)
     pdn->SetFeatureAngle(90);
     pdn->Update();
 
-    m_mesh=pdn->GetOutput();
+    m_mesh->DeepCopy(pdn->GetOutput());
 
-    vtkPolyDataWriter* pdw = vtkPolyDataWriter::New();
-    pdw->SetInput(m_mesh);
-    pdw->SetFileName("test.vtk");
-    pdw->Write();
-    pdw->Update();
-    pdw->Delete();
+//    vtkPolyDataWriter* pdw = vtkPolyDataWriter::New();
+//    pdw->SetInput(m_mesh);
+//    pdw->SetFileName("test.vtk");
+//    pdw->Write();
+//    pdw->Update();
+//    pdw->Delete();
+
+    cells->Delete();
+    pdn->Delete();
+    points->Delete();
 
 }
+
+FsSurfaceReader::~FsSurfaceReader()
+{
+    m_mesh->Delete();
+}
+
 
 vtkPolyData* FsSurfaceReader::GetVTKData()
 {
