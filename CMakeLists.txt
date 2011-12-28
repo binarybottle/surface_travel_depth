@@ -21,6 +21,6 @@ ADD_EXECUTABLE(meshTest
                 FsSurfaceReader.h
                 FsSurfaceReader.cpp
 VtkFileEditor.h
-VtkFileEditor.cxx)
+VtkFileEditor.cpp)
 
 TARGET_LINK_LIBRARIES(meshTest vtkCommon vtkRendering vtkHybrid)
