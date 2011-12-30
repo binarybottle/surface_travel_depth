@@ -27,8 +27,8 @@ VtkFileEditor::~VtkFileEditor()
 void VtkFileEditor::CreateField(char *fieldName, vtkDoubleArray *values)
 {
     m_outFile<<endl;
-    m_outFile<<fieldName;
-    m_outFile<<endl;
+    m_outFile<<"SCALARS "<<fieldName<<" double"<<endl;
+    m_outFile<<"LOOKUP_TABLE default"<<endl;
 
     for(int i = 0; i<values->GetNumberOfTuples() ; i++)
     {
