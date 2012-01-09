@@ -23,6 +23,8 @@
 #include <vtkCell.h>
 #include <vtkMath.h>
 #include <vector>
+#include <vtkCellLocator.h>
+
 
 #define pi 3.14159265358979323846
 #define sign(a)(a<0)?-1:1
@@ -214,6 +216,9 @@ public:
         //of the interior volume of the mesh. Stores it to this->closedMesh
         void ComputeClosedMesh();
 
+        void ComputeMedialSurfaces();
+
+
 
 	//Methods to get instance variables
 	vtkDoubleArray* GetGeoDistRing(){return this->geoDistRing;}
@@ -255,6 +260,9 @@ private:
         //
         //The common part of the constructors
         void Initialize();
+
+        double IsIntersecting(double point1[3], double point2[2]);
+
 
 	//Analysed mesh (constructor or SetMesh)
 	vtkPolyData* mesh;
@@ -332,6 +340,10 @@ private:
 
         //vector containg Euclidean depth values (ComputeEuclideanDepth)
         vtkDoubleArray* euclideanDepth;
+
+        vtkCellLocator* meshLocator;
+        vtkPolyData* medialSurface;
+
 };
 
 #endif

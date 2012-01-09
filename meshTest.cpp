@@ -36,25 +36,38 @@ int main(int argc, char** argv)
 
     MeshAnalyser* ma = new MeshAnalyser(fsr1->GetVTKData());
 
-    ma->ComputeClosedMesh();
+//    MeshAnalyser* ma1 = new MeshAnalyser(fsr1->GetVTKData());
+//    ma1->Simplify(20000);
 
-    //may be replaced by ComputeTravelDepthFromInflated
+
+//    MeshAnalyser* ma = new MeshAnalyser(argv[1]);
+
+
+    ma->ComputeTravelDepth(false);
+
+//    MeshAnalyser* ma = new MeshAnalyser(argv[1]);
+
+//    ma->ComputeClosedMesh();
+
+    //may be replaced by ComputeTravelDepthFromClosed
     //which is slower but does not allow to cross the surface
-    ma->ComputeEuclideanDepth(true);
+//    ma->ComputeEuclideanDepth(true);
 
-    ma->ComputeCurvature(0.7);
+//    ma->ComputeCurvature(0.7);
 
 //    ma->WriteIntoFile((char*)"closed.vtk",(char*)"closed");
 
-    ma->WriteIntoFile(argv[2],(char*)"curv");
+//    ma->ComputeMedialSurfaces();
 
-    VtkFileEditor* vfe = new VtkFileEditor(argv[2]);
-    vfe->CreateField((char*)"DEPTH", ma->GetEuclideanDepth());
-    vfe->CreateField((char*)"CURVATURE", ma->GetCurvature());
-    delete vfe;
+    ma->WriteIntoFile(argv[2], (char*)"depth");
+
+//    VtkFileEditor* vfe = new VtkFileEditor(argv[2]);
+//    vfe->CreateField((char*)"DEPTH", ma->GetEuclideanDepth());
+//    vfe->CreateField((char*)"CURVATURE", ma->GetCurvature());
+//    delete vfe;
 
     delete ma;
-    delete fsr1;
+//    delete fsr1;
 
 
     cout<<"Elapsed time (meshTest): "<<time(NULL)-start<<" s"<<endl;

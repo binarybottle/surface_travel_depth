@@ -30,12 +30,11 @@ FsSurfaceReader::FsSurfaceReader(char *fileName)
     ifstream myfile;
     myfile.open (fileName, ios::in | ios::binary);
 
+    vtkPolyData* pd = vtkPolyData::New();
 
     int fileIdType = readInt3(myfile);
 
     std::string creator = readTo2eol(myfile);
-
-
 
     unsigned char tmp[4];
     int x;
@@ -78,7 +77,11 @@ FsSurfaceReader::FsSurfaceReader(char *fileName)
 
     cout<<"points Inserted"<<endl;
 
-    m_mesh->SetPoints(points);
+
+    vtkIndent indent;
+    points->PrintSelf(cout, indent);
+
+    pd->SetPoints(points);
 
     vtkCellArray* cells = vtkCellArray::New();
     for(int i = 0 ; i<faceCount ; i++){
@@ -99,13 +102,25 @@ FsSurfaceReader::FsSurfaceReader(char *fileName)
 
     cout<<"faces Inserted"<<endl;
 
-    m_mesh->SetPolys(cells);
-    m_mesh->Update();
+//    cells->PrintSelf(cout, indent);
+
+
+    pd->SetPolys(cells);
+    pd->Update();
+
+    cout<<endl;
+
+    pd->PrintSelf(cout,indent);
 
     vtkPolyDataNormals *pdn = vtkPolyDataNormals::New();
-    pdn->SetInput(m_mesh);
+    pdn->SetInput(pd);
     pdn->SetFeatureAngle(90);
+    pdn->SplittingOff();
     pdn->Update();
+
+    cout<<endl;
+
+    pdn->GetOutput()->PrintSelf(cout,indent);
 
     m_mesh->DeepCopy(pdn->GetOutput());
 
